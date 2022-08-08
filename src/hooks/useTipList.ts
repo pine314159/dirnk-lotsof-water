@@ -6,12 +6,13 @@ const storeKey = 'drink-config-list'
 export default function useTipList () {
   const store = new Store('.settings.dat')
   const list = ref<TipItem[]>([])
-  store.get(storeKey).then(storeList => {
-    console.log('store数据', storeList)
+
+  const getStoreList = async () => {
+    const storeList = await store.get(storeKey)
     if (storeList) {
       list.value = storeList as TipItem[]
     }
-  })
+  }
 
   const addItem = (time: string) => {
     list.value.push({
@@ -57,6 +58,7 @@ export default function useTipList () {
 
   return {
     list,
+    getStoreList,
     addItem,
     deleteItem,
     changeEnabled,

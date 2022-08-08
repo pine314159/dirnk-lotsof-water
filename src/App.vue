@@ -6,7 +6,7 @@ import { ask } from '@tauri-apps/api/dialog'
 import { getCurrent } from '@tauri-apps/api/window'
 
 const timeStep = 30 // 分
-const { list, addItem, changeEnabled, deleteItem, save } = useTipList()
+const { list, addItem, changeEnabled, deleteItem, save, getStoreList } = useTipList()
 const newTime = ref<string>()
 const isConfirm = ref(true)
 
@@ -14,6 +14,7 @@ const webviewWindow = getCurrent();
 
 const showTip = async () => {
   try {
+    console.log('store数据', list.value)
     const date = new Date()
     const time = date.getHours() + ':' + date.getMinutes()
     if (list.value.find(item => item.time === time)?.isEnabled && isConfirm.value) {
@@ -24,11 +25,13 @@ const showTip = async () => {
       await webviewWindow.setFullscreen(false)
     }
   } catch (e) {
-    await ElMessageBox.alert(JSON.stringify(e), {type: 'error'})
+    await ElMessageBox.alert(JSON.stringify(e), { type: 'error' })
   }
 }
 
-const timer = window.setInterval(showTip, 1000 * 55)
+getStoreList().then(showTip)
+
+const timer = window.setInterval(showTip, 1000 * 60)
 
 const onAddItemClick = () => {
   const time = unref(newTime)
