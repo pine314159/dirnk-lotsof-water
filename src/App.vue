@@ -5,20 +5,22 @@ import useTipList from './hooks/useTipList'
 import { ask } from '@tauri-apps/api/dialog'
 import { getCurrent } from '@tauri-apps/api/window'
 
+const waterAudio = new URL('./assets/water.mp3', import.meta.url).href
 const timeStep = 30 // 分
 const { list, addItem, changeEnabled, deleteItem, save, getStoreList } = useTipList()
 const newTime = ref<string>()
 const isConfirm = ref(true)
-
 const webviewWindow = getCurrent();
+const audio = new Audio(waterAudio)
 
 const showTip = async () => {
   try {
-    console.log('store数据', list.value)
+    // console.log('store数据', list.value)
     const date = new Date()
     const time = date.getHours() + ':' + date.getMinutes()
     if (list.value.find(item => item.time === time)?.isEnabled && isConfirm.value) {
       isConfirm.value = false
+      audio.play()
       await webviewWindow.setFullscreen(true)
       await ask('记得喝水起来活动活动~~')
       isConfirm.value = true
