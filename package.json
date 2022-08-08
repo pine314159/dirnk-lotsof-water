@@ -13,7 +13,9 @@
     "check": "cd src-tauri && cargo check"
   },
   "dependencies": {
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v0.1.0",
     "@tauri-apps/api": "1.0.2",
+    "element-plus": "^2.2.12",
     "vue": "3.2.37"
   },
   "devDependencies": {
