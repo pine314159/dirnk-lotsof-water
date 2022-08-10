@@ -17,8 +17,9 @@ const showTip = async () => {
   try {
     // console.log('store数据', list.value)
     const date = new Date()
-    const time = date.getHours() + ':' + date.getMinutes()
-    if (list.value.find(item => item.time === time)?.isEnabled && isConfirm.value) {
+    const time = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0')
+    const item = list.value.find(item => item.time === time)
+    if (item && item.isEnabled && isConfirm.value) {
       isConfirm.value = false
       audio.play()
       await webviewWindow.setFullscreen(true)
@@ -33,7 +34,7 @@ const showTip = async () => {
 
 getStoreList().then(showTip)
 
-const timer = window.setInterval(showTip, 1000 * 60)
+const timer = window.setInterval(showTip, 1000 * 59)
 
 const onAddItemClick = () => {
   const time = unref(newTime)
@@ -50,6 +51,7 @@ const onDeleteItemClick = (id: number) => {
 onUnmounted(() => {
   window.clearInterval(timer)
 })
+
 </script>
 
 <template>
@@ -108,5 +110,11 @@ button.btn-effect:active {
   top: 3px;
   -webkit-box-shadow: 0px 2px 0px 0px #269BD0;
   box-shadow: 0px 2px 0px 0px #269BD0;
+}
+.el-select-dropdown {
+  pointer-events: none;
+}
+.el-scrollbar {
+  pointer-events: all;
 }
 </style>
