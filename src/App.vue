@@ -15,7 +15,6 @@ const audio = new Audio(waterAudio)
 
 const showTip = async () => {
   try {
-    // console.log('store数据', list.value)
     const date = new Date()
     const time = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0')
     const item = list.value.find(item => item.time === time)
