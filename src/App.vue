@@ -38,6 +38,7 @@ const timer = window.setInterval(showTip, 1000 * 59)
 const onAddItemClick = () => {
   const time = unref(newTime)
   if (!time) return ElMessageBox.alert('input time')
+  if (list.value.some(item => item.time === time)) return ElMessageBox.alert('time existed')
   addItem(time)
 }
 
@@ -54,11 +55,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-full font-normal border-2 border-b-blue-300">
+  <div class="w-full h-full pb-24 flex flex-col font-normal border-2 border-b-blue-300">
     <el-header>
       <h2 class="h-full shadow-lg flex justify-center items-center">Water drinking Schedule</h2>
     </el-header>
-    <el-main class="py-4">
+    <el-main class="py-4 flex-1 overflow-auto">
       <TipList :list="list" @switch-change="changeEnabled" @delete-item="onDeleteItemClick"/>
     </el-main>
     <el-footer class="flex items-center absolute bottom-4">
